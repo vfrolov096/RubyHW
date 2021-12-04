@@ -3,16 +3,16 @@ p '[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]'
 
 array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-#array.each_with_index do |e,i| # елементы с четными индексами
+# array.each_with_index do |e,i| # елементы с четными индексами
 #	puts e if i%2 == 0
-#end
+# end
 
-#parray.each_with_index do |e,i| # елементы с не четными индексами
+# parray.each_with_index do |e,i| # елементы с не четными индексами
 #	puts e if i%2 != 0
-#end
+# end
 
-p array.each_with_index {|e,i| puts e if i%2 != 0}
-p array.each_with_index {|e,i| puts e if i%2 == 0}
+p array.each_with_index { |e, i| puts e if i.odd? }
+p array.each_with_index { |e, i| puts e if i.even? }
 
 p '---------------------------'
 
@@ -21,11 +21,11 @@ p '[1, 99, 3, 15, 5, 123]'
 
 array = [1, 99, 3, 15, 5, 123]
 
-puts array.each_with_index do |e,i|
-	puts e if i%2 != 0
+puts array.each_with_index do |e, i|
+  puts e if i.odd?
 end
 
-p array.each_with_index {|e,i| puts e if i%2 == 0}
+p array.each_with_index { |e, i| puts e if i.even? }
 
 p '---------------------------'
 
@@ -50,7 +50,7 @@ p '5.Дан целочисленный массив. Преобразовать 
 p '[6, 2, 3, 4, 5, 6, 7, 8, 9, 10]'
 
 array = [100, 5, 40, 23, 35, 340, 124]
-p array.each { |e,i| puts e += array.first if e%2 == 0 }
+p array.each { |e, _i| puts e += array.first if e.even? }
 
 p '---------------------------'
 
@@ -250,7 +250,6 @@ p average = (array.sum / array.size).to_f
 
 p '---------------------------'
 
-
 p '30.Дан целочисленный массив. Вывести вначале все его четные элементы, а затем - нечетные.'
 p '[6, 1, 3, 4, 5, 12, 7, 8, 123, 234]'
 
@@ -259,11 +258,10 @@ p array.select { |e| e.even? } + array.select { |e| e.odd? }
 
 p '---------------------------'
 
-
 p '31.Дан целочисленный массив. Вывести индексы элементов, которые меньше своего левого соседа, и количество таких чисел.'
 
 array = [6, 1, 3, 4, 5, 12, 5, 8, 123, 234]
-p var = (1... array.size).select{ |i| array[i] < array[i-1] }
+p var = (1...array.size).select { |i| array[i] < array[i - 1] }
 p var, var.size
 
 p '---------------------------'
@@ -289,7 +287,7 @@ array = [6, 1, -143, 4, 5, -12, 5, 400, 14, -32]
 def positive_to_min(array)
   min = array.min
   array.map { |n| n > 0 ? min : n }
- end
+end
 p positive_to_min(array)
 
 p '---------------------------'
@@ -301,7 +299,7 @@ array = [6, 1, -143, 4, 5, -12, 5, 400, 14, -32]
 def positive_to_max(array)
   max = array.max
   array.map { |n| n > 0 ? max : n }
- end
+end
 p positive_to_max(array)
 
 p '---------------------------'
@@ -313,7 +311,7 @@ array = [6, 1, -143, 4, 5, -12, 5, 400, 14, -32]
 def neg_to_min(array)
   min = array.min
   array.map { |n| n < 0 ? min : n }
- end
+end
 p neg_to_min(array)
 
 p '---------------------------'
@@ -325,7 +323,7 @@ array = [6, 1, -143, 4, 5, -12, 5, 400, 14, -32]
 def neg_to_max(array)
   max = array.max
   array.map { |n| n < 0 ? max : n }
- end
+end
 p neg_to_max(array)
 
 p '---------------------------'
@@ -333,41 +331,40 @@ p '---------------------------'
 p '36.Дан целочисленный массив. Найти количество его локальных максимумов.'
 
 array = [6, 1, -143, 4, 5, -12, 5, 400, 14, -32]
-p( (1..array.size-2).to_a.select{ |i| (array[i] > array[i-1])&&(array[i] > array[i+1]) }.size )
+p((1..array.size - 2).to_a.select { |i| (array[i] > array[i - 1]) && (array[i] > array[i + 1]) }.size)
 
 p '---------------------------'
 
 p '36.Дан целочисленный массив. Найти количество его локальных минимумов.'
 
 array = [6, 1, -143, 4, 5, -12, 5, 400, 14, -32]
-p( (1..array.size-2).to_a.select{ |i| (array[i] < array[i-1])&&(array[i] < array[i+1]) }.size )
+p((1..array.size - 2).to_a.select { |i| (array[i] < array[i - 1]) && (array[i] < array[i + 1]) }.size)
 
 p '---------------------------'
 
 p '37.Дан целочисленный массив. Найти количество элементов, между первым и последним максимальным.'
 
-array = [1,2,3,12,3,0,12,7,4,7,12,9,6]
+array = [1, 2, 3, 12, 3, 0, 12, 7, 4, 7, 12, 9, 6]
 
 fmin = array.index(array.max)
-smin = (array[fmin+1..-1].index(array[fmin+1..-1].max)) + (fmin + 1)
-p array[fmin+1 ... smin].size
+smin = array[fmin + 1..-1].index(array[fmin + 1..-1].max) + (fmin + 1)
+p array[fmin + 1...smin].size
 
 p '---------------------------'
 
 p '37.Дан целочисленный массив. Найти количество элементов, между первым и последним минимальным.'
 
-array = [1,2,3,12,3,0,12,7,4,7,12,9,6]
+array = [1, 2, 3, 12, 3, 0, 12, 7, 4, 7, 12, 9, 6]
 
 fmin = array.index(array.min)
-smin = (array[fmin+1..-1].index(array[fmin+1..-1].min)) + (fmin + 1)
-p array[fmin+1 ... smin].size
+smin = array[fmin + 1..-1].index(array[fmin + 1..-1].min) + (fmin + 1)
+p array[fmin + 1...smin].size
 
 p '---------------------------'
 
-
 p '38.Дан целочисленный массив. Найти индекс первого максимального элемента.'
 
-array = [1,2,3,12,3,8,12,7,4,7,12,9,6]
+array = [1, 2, 3, 12, 3, 8, 12, 7, 4, 7, 12, 9, 6]
 
 def max_index(array)
   array.index(array.max)
@@ -375,7 +372,4 @@ end
 
 puts max_index(array)
 
-
 p '---------------------------'
-
-
